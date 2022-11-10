@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-
 # displays "Best School" 10 times
-n=0
-while [[ $n -lt 10 ]]
+
+i=0
+while [[ $i -lt 10 ]]
 do 
 	echo "Best School"
-	n=$((n + 1))
+	i=$((i + 1))
 done
