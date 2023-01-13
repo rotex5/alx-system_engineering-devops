@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-
 # Scipt that fix apache server bug
+
 service apache2 start
