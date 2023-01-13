@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 # Scipt that fix apache server bug
 
-echo "ServerName localhost" >> /etc/apache2.conf
 service apache2 start
