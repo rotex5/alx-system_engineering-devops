@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Configure your Nginx server so that /redirect_me is redirecting to another page.
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo chown -R "$USER:$USER" /var/www
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com\/ permanent;\n\n\terror_page 404 \/custom_404.html;\n\tlocation = \/custom_404.html {\n\t\troot \/usr\/share\/nginx\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
+sudo service nginx start
