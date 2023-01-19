@@ -13,25 +13,25 @@ sudo apt-get install -y haproxy=2.6.\*
 # enable the service to auto-start on every system reboot.
 sudo systemctl enable haproxy
 
-haconfig_file="/etc/haproxy/haproxy.cfg"
+hgproxy_conf_file="/etc/haproxy/haproxy.cfg"
 
-sudo cp "$haconfig_file" "$haconfig_file.bk"
+sudo cp $hgproxy_conf_file $hgproxy_conf_file.bk
 
-# Configuring Load Balancers
-settings="\
-frontend haproxy-balancer
-    bind *:80
-    mode http
-    default_backend web-backend
-    
-backend web-backend
-    balance roundrobin
-    server 72494-web-01 54.172.37.10:80 check
-    server 72494-web-02 54.82.176.244:80 check
-"
-sudo echo "$settings" | tee $haconfig_file >/dev/null
-# sudo sed -i "$ a $settings"  $haconfig_file
-# sudo cat "$settings" >> "$haconfig_file"
+# Configure Load Balancer
+fname="frontend haproxy-balancer"
+fbind="bind *:80"
+fmode="mode http"
+fdefault="default_backend web-backend"
+frontend="$fname\n\t$fbind\n\t$fmode\n\t$fdefault\n"
+
+bname="backend web-backend"
+bbalance="balance roundrobin"
+bserver1="server 72494-web-01 54.172.37.10:80 check"
+bserver2="server 72494-web-02 54.82.176.244:80 check"
+backend="$bname\n\t$bbalance\n\t$bserver1\n\t$bserver2"
+
+sudo sed -i "$ a $frontend" $hgproxy_conf_file
+sudo sed -i "$ a $backend" $hgproxy_conf_file
 
 # Restarting HAProxy Service
 sudo service haproxy restart
