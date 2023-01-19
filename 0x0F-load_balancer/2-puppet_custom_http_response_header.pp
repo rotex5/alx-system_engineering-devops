@@ -6,8 +6,7 @@ $content = "\trewrite ^/redirect_me/$ ${link} permanent;"
 $custom_header = "add_header X-Served-By \$hostname;"
 
 exec { 'update packages':
-  provider => shell
-  command  => 'sudo apt-get update'
+  command => '/usr/bin/apt-get update'
 }
 
 exec { 'restart nginx':
