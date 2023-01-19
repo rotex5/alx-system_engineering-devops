@@ -11,8 +11,8 @@ exec {'install':
 
 
 exec { 'restart nginx':
+  provider => shell,
   command  => 'sudo service nginx restart',
-  provider => shell
 }
 
 
@@ -27,6 +27,6 @@ file_line { 'Insert X-Served-By header':
 }
 
 exec { 'restart nginx':
+  provider => shell,
   command  => 'sudo service nginx restart',
-  provider => shell
 }
