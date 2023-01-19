@@ -1,6 +1,5 @@
 # automate the task of creating a custom HTTP header response, but with Puppet.
 include stdlib
-include stdlib
 
 $link = 'https://www.youtube.com/watch?v=PCfiqY05BpA'
 $content = "\trewrite ^/redirect_me/$ ${link} permanent;"
