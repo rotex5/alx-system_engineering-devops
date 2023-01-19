@@ -10,8 +10,7 @@ exec { 'update packages':
 }
 
 exec { 'restart nginx':
-  command  => 'sudo service nginx restart',
-  provider => shell
+  command => '/usr/sbin/service nginx restart',
   require => Package['nginx']
 }
 
