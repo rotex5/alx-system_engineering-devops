@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Configure HAproxy so that it send traffic to web-01 and web-02
+
+# Updating/Upgrading system and installing HAproxy
+sudo apt-get  update -y
+sudo apt upgrade -y
+
+sudo add-apt-repository ppa:vbernat/haproxy-2.6 -y
+
+sudo apt-get update -y
+sudo apt-get install -y haproxy=2.6.\*
+
+# enable the service to auto-start on every system reboot.
+sudo systemctl enable haproxy
+
+haconfig_file="/etc/haproxy/haproxy.cfg"
+
+sudo cp "$haconfig_file" "$haconfig_file.bk"
+
+# Configuring Load Balancers
+settings="\
+frontend haproxy-balancer
+    bind *:80
+    mode http
+    default_backend web-backend
+    
+backend web-backend
+    balance roundrobin
+    server 72494-web-01 54.172.37.10:80 check
+    server 72494-web-02 54.82.176.244:80 check
+"
+sudo echo "$settings" | tee $haconfig_file >/dev/null
+# sudo sed -i "$ a $settings"  $haconfig_file
+# sudo cat "$settings" >> "$haconfig_file"
+
+# Restarting HAProxy Service
+sudo service haproxy restart

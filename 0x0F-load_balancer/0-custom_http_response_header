@@ -1,8 +1,50 @@
 #!/usr/bin/env bash
+# Install a nginx web server listening on port 80.
+#
+# Also, when querying nginx at its root / with a GET
+# request, it returns a page that contains the string
+# 'Hello World'.
+#
+# variables to hold link and redirection
+link="https://www.youtube.com/watch?v=PCfiqY05BpA"
+redir_ect="server_name _;\n\trewrite ^/redirect_me/$ $link permanent;"
+location_error="location = /404.html {\n\t\troot /var/www/html/;\n\t\tinternal;\n"
+error_directive="error_page 404 /404.html;\n\t$location_error"
+error_404="}\n\n\t$error_directive\t}"
+
+# Update package list
+sudo apt-get update
+
+# Install nginx
+sudo apt-get install -y nginx
+
+# shorthand for allowing traffic on port 80
+sudo ufw allow 'Nginx HTTP'
+
+# assign ownership to the account that
+# we are currently signed in on
+sudo chown -R "$USER:$USER" /var/www/
+
+# create the server's default page
+echo "Hello World!" > /var/www/html/index.html
+
+# create the custom error text for not found page
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# edit the 'default' and replace the text "server_name _;"
+# with the redirect rule defined in $redir_ect variable.
+sudo sed -i "s|server_name\ _;|$redir_ect|" /etc/nginx/sites-available/default
+
+# Update the Nginx configuration to use the custom 404 page
+sudo sed -i "0,/}/ s|}|$error_404|" /etc/nginx/sites-available/default
+
+
 # Configure Nginx so that its HTTP response contains
 # a custom header (on web-01 and web-02)
 
 entry="add_header X-Served-By $HOSTNAME;";
 redirect="http {\n\t$entry"
 sudo sed -i "s|http {|$redirect|" /etc/nginx/nginx.conf
+
+# Restart nginx without using systemctl
 sudo service nginx restart
