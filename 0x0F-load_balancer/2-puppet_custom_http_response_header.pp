@@ -25,3 +25,8 @@ file_line { 'Insert X-Served-By header':
   notify   => Exec['restart nginx'],
   require  => File['/var/www/html/index.nginx-debian.html']
 }
+
+exec { 'restart nginx':
+  command  => 'sudo service nginx restart',
+  provider => shell
+}
