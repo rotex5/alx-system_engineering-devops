@@ -10,20 +10,12 @@ exec {'install':
 }
 
 
-exec { 'restart nginx':
-  provider => shell,
-  command  => 'sudo service nginx restart',
-}
-
-
 file_line { 'Insert X-Served-By header':
   ensure   => 'present',
   after    => 'http {',
   path     => '/etc/nginx/nginx.conf',
   multiple => true,
   line     => $custom_header,
-  notify   => Exec['restart nginx'],
-  require  => File['/var/www/html/index.nginx-debian.html']
 }
 
 exec { 'restart nginx':
