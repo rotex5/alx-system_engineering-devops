@@ -3,7 +3,10 @@
 # on an nginx server
 
 # sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+# Deleting default file in site_enabled
 sudo rm -f /etc/nginx/sites-enabled/default
+
+# Symlinking site-enable to default file in site available
 sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 sudo service nginx restart 
