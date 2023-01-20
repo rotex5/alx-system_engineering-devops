@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Bash script for reconfiguring the listening porton an nginx server
 sudo sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-# sudo service nginx restart
 #sudo service nginx stop
 sudo pkill -1 nginx
