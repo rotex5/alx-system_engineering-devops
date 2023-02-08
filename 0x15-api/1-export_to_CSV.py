@@ -18,8 +18,8 @@ def generate_csv(id):
 
     with open(filename, "a") as f:
         for task in todos:
-            f.write('"{}","{}","{}","{}"\n'.format(
-                task.get('userId'), user.get('name'),
+            f.write('"{}","{}","{}","{}" \n'.format(
+                user_id, user.get('username'),
                 task.get('completed'), task.get('title')))
 
 
