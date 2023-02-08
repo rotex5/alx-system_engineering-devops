@@ -22,7 +22,7 @@ def get_details(id):
     print("Employee {} is done with tasks({}/{}):".format(
         user.get("name"), len(completed_task), len(todos)))
     for task in completed_task:
-        print("\t{}".format(task))
+        print("\t {}".format(task))
 
 
 if __name__ == "__main__":
