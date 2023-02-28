@@ -14,15 +14,6 @@ def count_words(subreddit, word_list, after='', word_dict={}):
     If no posts match or subreddit is invalid, print a newline.
     If a word has no matches, skip and do not print it.
     """
-    user_agent = 'Mozilla/5.0 (X11; Linux x86_64)\
-            AppleWebKit/537.36 (KHTML, like Gecko)'
-    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
-    header = {'User-Agent': user_agent}
-    params = {
-            'limit': 100,
-            'after': after
-            }
-
     if not word_dict:
         for word in word_list:
             if word.lower() not in word_dict:
@@ -35,16 +26,19 @@ def count_words(subreddit, word_list, after='', word_dict={}):
                 print('{}: {}'.format(word[0], word[1]))
         return None
 
-    response = requests.get(url, headers=header, params=params,
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+    header = {'user-agent': 'redquery'}
+    parameters = {'limit': 100, 'after': after}
+    response = requests.get(url, headers=header, params=parameters,
                             allow_redirects=False)
 
     if response.status_code != 200:
         return None
 
     try:
-        hot_articles = response.json()['data']['children']
+        hot = response.json()['data']['children']
         aft = response.json()['data']['after']
-        for post in hot_articles:
+        for post in hot:
             title = post['data']['title']
             lower = [word.lower() for word in title.split(' ')]
 
