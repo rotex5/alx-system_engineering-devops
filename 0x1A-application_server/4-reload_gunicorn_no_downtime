@@ -2,4 +2,5 @@
 # Script to gracefully reload Gunicorn configurations
 # and restart workers without killing master processes
 # pgrep gunicorn | xargs kill -HUP
-sudo pkill -HUP gunicorn
+# sudo pkill -HUP gunicorn
+kill -HUP "$(ps -C gunicorn fch -o pid | head -n 1)"
