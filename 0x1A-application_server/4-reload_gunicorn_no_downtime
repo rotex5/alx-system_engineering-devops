@@ -4,3 +4,4 @@
 # pgrep gunicorn | xargs kill -HUP
 # sudo pkill -HUP gunicorn
 kill -HUP "$(ps -C gunicorn fch -o pid | head -n 1)"
+echo 'OK'
